@@ -1,0 +1,17 @@
+package com.github.bartoszpogoda.distmarketcentral.dto;
+
+import lombok.Data;
+
+import javax.persistence.Id;
+
+@Data
+public class SupplierDataDto {
+    @Id
+    private String id;
+
+    private String name;
+
+    private String createOrderHook;
+
+    private boolean active;
+}

@@ -17,3 +17,6 @@ security:
 adminAccount:
   username: admin
   password: admin
+
+apiKey:
+  length: 128

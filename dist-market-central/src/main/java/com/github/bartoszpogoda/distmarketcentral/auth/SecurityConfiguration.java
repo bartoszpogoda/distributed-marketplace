@@ -1,5 +1,7 @@
 package com.github.bartoszpogoda.distmarketcentral.auth;
 
+import com.github.bartoszpogoda.distmarketcentral.service.SupplierAdministrationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,10 +22,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${adminAccount.password}")
     private String adminPassword;
 
+    @Autowired
+    private SupplierAdministrationService supplierAdministrationService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         APIKeyAuthFilter apiKeyFilter = new APIKeyAuthFilter("API-KEY");
-        apiKeyFilter.setAuthenticationManager(new APIKeyAuthenticationManager());
+        apiKeyFilter.setAuthenticationManager(new APIKeyAuthenticationManager(supplierAdministrationService));
 
         BasicAuthenticationFilter basicFilter = new BasicAuthenticationFilter(new BasicAuthAuthenticationManager(adminUsername, adminPassword));
 
