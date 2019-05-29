@@ -1,4 +1,4 @@
-package com.github.bartoszpogoda.distmarketcentral.api;
+package com.github.bartoszpogoda.distmarketcentral.api.supplier;
 
 import com.github.bartoszpogoda.distmarketcentral.auth.AuthenticatedSupplierId;
 import com.github.bartoszpogoda.distmarketcentral.dto.SupplierDataDto;
@@ -27,12 +27,17 @@ public class SupplierDataController {
     @PutMapping
     public ResponseEntity<SupplierDataDto> update(@RequestBody SupplierDataForm form, @AuthenticatedSupplierId String supplierId) {
         return this.supplierDataService.updateSupplierData(supplierId, form)
-                .map(supplierDataMapper::map).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+                .map(supplierDataMapper::map)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    public void get() {
-
+    @GetMapping
+    public ResponseEntity<SupplierDataDto> get(@AuthenticatedSupplierId String supplierId) {
+        return this.supplierDataService.get(supplierId)
+                .map(supplierDataMapper::map)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

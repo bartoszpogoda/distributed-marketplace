@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 @Data
 public class SupplierDataDto {
-    @Id
+
     private String id;
 
     private String name;

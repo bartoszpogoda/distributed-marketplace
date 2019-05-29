@@ -19,7 +19,7 @@ public class SupplierDataServiceImpl implements SupplierDataService {
 
     @Override
     public Optional<Supplier> updateSupplierData(String supplierId, SupplierDataForm form) {
-        return this.supplierRepository.findById(supplierId).flatMap(loggedInSupplier -> {
+        return get(supplierId).flatMap(loggedInSupplier -> {
             if(form.getActive() != null) {
                 loggedInSupplier.setActive(form.getActive());
             }
@@ -30,6 +30,11 @@ public class SupplierDataServiceImpl implements SupplierDataService {
 
             return Optional.ofNullable(this.supplierRepository.save(loggedInSupplier));
         });
+    }
+
+    @Override
+    public Optional<Supplier> get(String supplierId) {
+        return this.supplierRepository.findById(supplierId);
     }
 
 }

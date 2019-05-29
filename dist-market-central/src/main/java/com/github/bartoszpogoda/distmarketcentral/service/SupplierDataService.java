@@ -9,4 +9,6 @@ public interface SupplierDataService {
 
     public Optional<Supplier> updateSupplierData(String supplierId, SupplierDataForm form);
 
+    public Optional<Supplier> get(String supplierId);
+
 }

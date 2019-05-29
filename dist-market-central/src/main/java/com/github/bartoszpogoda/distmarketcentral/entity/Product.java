@@ -1,6 +1,7 @@
 package com.github.bartoszpogoda.distmarketcentral.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.OneToOne;
 import java.math.BigInteger;
 
 @Data
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
