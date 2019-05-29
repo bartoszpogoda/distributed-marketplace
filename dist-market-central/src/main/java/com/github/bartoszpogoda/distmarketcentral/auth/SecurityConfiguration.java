@@ -35,7 +35,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilter(apiKeyFilter).addFilterBefore(basicFilter, APIKeyAuthFilter.class)
-                .authorizeRequests().anyRequest().authenticated();
+                .authorizeRequests()
+                .antMatchers("/api/v1/products").permitAll()
+                .anyRequest().authenticated();
     }
 
 }

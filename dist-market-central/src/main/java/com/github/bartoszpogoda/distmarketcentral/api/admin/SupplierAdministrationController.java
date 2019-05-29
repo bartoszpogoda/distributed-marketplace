@@ -1,4 +1,4 @@
-package com.github.bartoszpogoda.distmarketcentral.api;
+package com.github.bartoszpogoda.distmarketcentral.api.admin;
 
 import java.net.URI;
 
