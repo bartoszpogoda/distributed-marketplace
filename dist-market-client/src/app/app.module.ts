@@ -7,13 +7,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ProductEntryComponent } from './components/product-entry/product-entry.component';
+import { BasketEntryComponent } from './components/basket-entry/basket-entry.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ExploreTabComponent,
     ProductEntryComponent,
-    OrderTabComponent
+    OrderTabComponent,
+    BasketEntryComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Product } from 'src/app/model/product';
 
 @Component({
@@ -10,12 +10,14 @@ import { Product } from 'src/app/model/product';
         <div class="card-body">
           <h5 class="card-title">{{product.title}} <span class="badge badge-secondary">{{product.supplierId}}</span></h5>
           <div class="card-text">
+            <p>{{product.description}}</p>
             <p>
             Producer: {{product.supplierName}} <br/>
-            Left in stock: {{product.quantity}}
+            Left in stock: {{product.quantity}} <br/>
+            Price: {{product.priceMinor / 100}} zł
             </p>
           </div>
-          <a href="#" class="btn btn-primary">Buy!</a>
+          <a (click)="addToOrderClicked()" class="btn btn-primary">Add to order!</a>
         </div>
       </div>
     </div>
@@ -27,9 +29,16 @@ export class ProductEntryComponent implements OnInit {
   @Input()
   product: Product;
 
+  @Output()
+  added = new EventEmitter<Product>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addToOrderClicked() {
+    this.added.emit(this.product);
   }
 
 }
