@@ -1,0 +1,65 @@
+.logInButton {
+    margin: 7px;
+}
+
+.navbar-login {
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session {
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size {
+    font-size: 87px;
+}
+
+.parralax-bg-image {
+    position: relative;
+    /*opacity: 0.65;*/
+    background-attachment: fixed;
+    /*mb better without?*/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.on-image-caption {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.7em;
+    background-color: #00000063;
+    color: #ffffff;
+}
+
+.parralax-bg-image.image-1 {
+    background-image: url("../images/rental.jpg");
+    min-height: 500px;
+}
+
+.stylish-input-group .input-group-addon {
+    background: white !important;
+}
+
+.stylish-input-group .form-control {
+    border-right: 0;
+    box-shadow: 0 0 0;
+    border-color: #ccc;
+}
+
+.stylish-input-group button {
+    border: 0;
+    background: transparent;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}

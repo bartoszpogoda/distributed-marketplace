@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: dist-market-producer
+  security:
+    basic:
+      enabled: false
+    user:
+      name: admin
+      password: admin
+server:
+  port: 8863
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
