@@ -2,18 +2,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BasketEntry } from 'src/app/model/basket';
 
 @Component({
-  selector: 'app-basket-entry',
+  // tslint:disable-next-line:component-selector
+  selector: '[app-basket-entry]',
   template: `
-    <div style="display: flex; justify-content: space-between;">
-      <div> {{entry.product.title}} </div>
-      <div style="display: flex; width: 100px; justify-content: space-between; margin: 5px;
-      ">
-        <button (click)="decremented.emit()" type="button" class="btn">-</button>
-        <div>{{entry.quantity}}</div>
-        <button (click)="incremented.emit()"  type="button" class="btn btn-primary">+</button>
-      </div>
-      <div>{{entry.subTotalMinor / 100}} zł</div>
-    </div>
+    <td>{{entry.product.title}}</td>
+    <td>{{entry.quantity}}</td>
+    <td>
+      <button (click)="decremented.emit()" type="button" class="btn" style="margin: 3px; font-size: 0.5rem;">-</button>
+      <button (click)="incremented.emit()"  type="button" class="btn btn-primary" style="margin: 3px; font-size: 0.5rem;">+</button>
+    </td>
+    <td>{{entry.subTotalMinor / 100}} zł</td>
   `
 })
 export class BasketEntryComponent implements OnInit {

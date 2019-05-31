@@ -74,7 +74,11 @@ export class BasketService {
       entry.subTotalMinor = entry.product.priceMinor * entry.quantity;
     });
 
-    basket.totalMinor = basket.entries.map(ent => ent.subTotalMinor).reduce((a, b) => a + b);
+    if (basket.entries.length === 0) {
+      basket.totalMinor = 0;
+    } else {
+      basket.totalMinor = basket.entries.map(ent => ent.subTotalMinor).reduce((a, b) => a + b);
+    }
   }
 
 }

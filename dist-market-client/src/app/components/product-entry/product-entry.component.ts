@@ -16,7 +16,7 @@ import { Product } from 'src/app/model/product';
           Price: {{product.priceMinor / 100}} zł
           </p>
         </div>
-        <a (click)="addToOrderClicked()" class="btn btn-primary">Add to order!</a>
+        <button (click)="addToOrderClicked()" class="btn btn-primary btn-block">Add to order!</button>
       </div>
     </div>
   `,

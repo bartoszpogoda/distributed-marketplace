@@ -4,26 +4,107 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/service/product.service';
 import { Observable } from 'rxjs';
 import { Product } from 'src/app/model/product';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-order-tab',
   template: `
-    <div class="order-tab">
+    <div class="order-tab" style="padding: 5px;">
       <div style="text-align: center;">
         <h1>Order</h1>
         <p>Manage your basket and place your order</p>
       </div>
 
-      <app-basket-entry *ngFor="let entry of (basket$ | async)?.entries"
+      <table class="table table-striped">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+                <th>Price</th>
+            </tr>
+            <tr app-basket-entry *ngFor="let entry of (basket$ | async)?.entries"
             [entry]="entry"
             (decremented)="onEntryDecremented(entry)"
             (incremented)="onEntryIncremented(entry)">
-      </app-basket-entry>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>Total: </td>
+              <td>{{(basket$ | async)?.totalMinor / 100}} zł</td>
+            </tr>
+        </table>
 
-      <p> Total: {{(basket$ | async)?.totalMinor / 100}} zł</p>
-      <p> Order details (client details form) </p>
+      <div style="text-align: center;">
+        <h3> Client details </h3>
+      </div>
 
-      <a (click)="placeOrderClicked()" class="btn btn-primary">Place order</a>
+      <form [formGroup]="clientForm">
+        <div class="form-group" style="margin: 3px;">
+          <div class="row">
+            <div class="col-6">
+              <label>First name</label>
+            </div>
+            <div class="col-6">
+              <input type="text" formControlName="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && controls.firstName.errors }" />
+              <div *ngIf="submitted && controls.firstName.errors" class="invalid-feedback">
+                  <div *ngIf="controls.firstName.errors.required">First name is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin: 3px;">
+          <div class="row">
+            <div class="col-6">
+              <label>Family name</label>
+            </div>
+            <div class="col-6">
+              <input type="text" formControlName="familyName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && controls.familyName.errors }" />
+              <div *ngIf="submitted && controls.familyName.errors" class="invalid-feedback">
+                  <div *ngIf="controls.familyName.errors.required">Family name is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group" style="margin: 3px;">
+          <div class="row">
+            <div class="col-6">
+              <label>Shipping address</label>
+            </div>
+            <div class="col-6">
+              <input type="text" formControlName="address" class="form-control" autocomplete="shipping street-address"
+              [ngClass]="{ 'is-invalid': submitted && controls.address.errors }" />
+              <div *ngIf="submitted && controls.address.errors" class="invalid-feedback">
+                  <div *ngIf="controls.address.errors.required">Address is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group" style="margin: 3px;">
+          <div class="row">
+            <div class="col-6">
+              <label>Email address</label>
+            </div>
+            <div class="col-6">
+              <input type="text" formControlName="email" class="form-control" autocomplete="shipping street-address"
+              [ngClass]="{ 'is-invalid': submitted && controls.email.errors }" />
+              <div *ngIf="submitted && controls.email.errors" class="invalid-feedback">
+                  <div *ngIf="controls.email.errors.required">Email is required</div>
+                  <div *ngIf="controls.email.errors.email">Email is invalid</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <button (click)="placeOrderClicked()" class="btn btn-primary btn-block" style="margin-top: 20px;"
+      [ngClass]="{ 'disabled': (basket$ | async)?.entries.length === 0 }">Place order</button>
     </div>
   `,
   styles: [`
@@ -37,7 +118,17 @@ export class OrderTabComponent implements OnInit {
 
   constructor(private basketService: BasketService) {}
 
+  clientForm = new FormGroup({
+    firstName: new FormControl('', [Validators.required]),
+    familyName: new FormControl('', [Validators.required]),
+    address: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
+
+  get controls() { return this.clientForm.controls; }
+
   basket$;
+  submitted: boolean;
 
   ngOnInit() {
     this.basket$ = this.basketService.getBasket();
@@ -49,5 +140,13 @@ export class OrderTabComponent implements OnInit {
 
   onEntryIncremented(entry: BasketEntry) {
     this.basketService.incrementQuantity(entry);
+  }
+
+  placeOrderClicked() {
+    this.submitted = true;
+
+    if (this.clientForm.invalid) {
+        return;
+    }
   }
 }
