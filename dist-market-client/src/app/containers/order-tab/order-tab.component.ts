@@ -1,17 +1,19 @@
-import { BasketEntry } from 'src/app/model/basket';
+import { BasketEntry, Basket } from 'src/app/model/basket';
 import { BasketService } from './../../service/basket.service';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/service/product.service';
 import { Observable } from 'rxjs';
+import { take, tap, switchMap } from 'rxjs/operators';
 import { Product } from 'src/app/model/product';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { OrderService } from 'src/app/service/order.service';
 
 @Component({
   selector: 'app-order-tab',
   template: `
     <div class="order-tab" style="padding: 5px;">
       <div style="text-align: center;">
-        <h1>Order</h1>
+        <h1>Order Card</h1>
         <p>Manage your basket and place your order</p>
       </div>
 
@@ -91,7 +93,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               <label>Email address</label>
             </div>
             <div class="col-6">
-              <input type="text" formControlName="email" class="form-control" autocomplete="shipping street-address"
+              <input type="text" formControlName="email" class="form-control" autocomplete="email"
               [ngClass]="{ 'is-invalid': submitted && controls.email.errors }" />
               <div *ngIf="submitted && controls.email.errors" class="invalid-feedback">
                   <div *ngIf="controls.email.errors.required">Email is required</div>
@@ -116,7 +118,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class OrderTabComponent implements OnInit {
 
-  constructor(private basketService: BasketService) {}
+  constructor(private basketService: BasketService, private orderService: OrderService) { }
 
   clientForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -127,7 +129,7 @@ export class OrderTabComponent implements OnInit {
 
   get controls() { return this.clientForm.controls; }
 
-  basket$;
+  basket$: Observable<Basket>;
   submitted: boolean;
 
   ngOnInit() {
@@ -146,7 +148,12 @@ export class OrderTabComponent implements OnInit {
     this.submitted = true;
 
     if (this.clientForm.invalid) {
-        return;
+      return;
     }
+
+    this.basket$.pipe(
+      take(1),
+      switchMap(basket => this.orderService.createOrder(basket, this.clientForm))
+    ).subscribe(result => console.log(result));
   }
 }
