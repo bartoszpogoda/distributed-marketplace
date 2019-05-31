@@ -121,7 +121,11 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class OrderTabComponent implements OnInit {
 
-  constructor(private basketService: BasketService, private orderService: OrderService, private alertService: AlertService) { }
+  constructor(
+    private basketService: BasketService,
+    private orderService: OrderService,
+    private alertService: AlertService,
+    private productService: ProductService) { }
 
   clientForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -158,14 +162,15 @@ export class OrderTabComponent implements OnInit {
       take(1),
       switchMap(basket => this.orderService.createOrder(basket, this.clientForm))
     ).subscribe(next => {
-      console.log(next);
+      this.productService.refresh();
+      // this.basketService.clear();
+
       this.alertService.change({
         type: 'success',
         title: 'Success',
         message: 'Order was created succesfully. Please check your e-mail for further details.'
       });
     }, error => {
-      console.log(error);
       this.alertService.change({ type: 'danger', title: error.error.error, message: error.error.message });
     });
   }

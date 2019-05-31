@@ -41,6 +41,10 @@ export class BasketService {
     }
   }
 
+  clear() {
+    this.$basket.next(this.emptyBasket);
+  }
+
   decrementQuantity(entry: BasketEntry) {
     this.$basket.next(this.changeQuantity(this.$basket.getValue(), entry, -1));
   }

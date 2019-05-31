@@ -106,4 +106,9 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.removeById(productId) > 0;
     }
 
+    @Override
+    public void save(Product product) {
+        this.productRepository.save(product);
+    }
+
 }

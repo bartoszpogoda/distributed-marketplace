@@ -16,6 +16,7 @@ import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
      * @param createOrderDto
      */
     @Override
+    @Transactional
     public void processNewOrder(CreateOrderDto createOrderDto) {
         List<OrderEntryDto> entries = createOrderDto.getEntries();
 
@@ -55,6 +57,9 @@ public class OrderServiceImpl implements OrderService {
             PrepareOrderDto orderDto = suppliersToOrdersMap.getOrDefault(product.getSupplier().getId(), buildPrepareOrderDto(createOrderDto));
 
             orderDto.getEntries().add(entry);
+
+            product.setQuantity(product.getQuantity() - entry.getQuantity());
+            productService.save(product);
 
             suppliersToOrdersMap.put(product.getSupplier().getId(), orderDto);
         }
@@ -82,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
                     log.info("All sub-orders aborted");
 
                     throw new ResponseStatusException(
-                            HttpStatus.BAD_REQUEST, "Denied by " + producerId);
+                            HttpStatus.BAD_REQUEST, "Order denied by " + producerId);
                 }
 
                 log.info("Sub-order for " + producerId + " prepared");
@@ -94,10 +99,8 @@ public class OrderServiceImpl implements OrderService {
                 log.info("All sub-orders aborted");
 
                 throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST, "Denied by " + producerId);
+                        HttpStatus.BAD_REQUEST, "Order denied by " + producerId);
             }
-
-
         }
 
         // commit phase
