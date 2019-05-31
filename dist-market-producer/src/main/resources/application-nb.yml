@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: New Balance
+
+server:
+  port: 8902
+
+marketplace:
+  api:
+    key: e6c5967af1efb8aace686c7aad24b7c0

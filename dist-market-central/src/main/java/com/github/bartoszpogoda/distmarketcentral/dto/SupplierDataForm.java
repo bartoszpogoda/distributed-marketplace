@@ -7,6 +7,6 @@ public class SupplierDataForm {
 
     private Boolean active;
 
-    private String createOrderHook;
+    private String orderHook;
 
 }

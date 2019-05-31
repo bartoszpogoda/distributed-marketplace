@@ -23,7 +23,7 @@ public class Supplier {
 
 	private String apiKey;
 
-	private String createOrderHook;
+	private String orderHook;
 
 	private boolean active;
 

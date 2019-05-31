@@ -32,11 +32,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         BasicAuthenticationFilter basicFilter = new BasicAuthenticationFilter(new BasicAuthAuthenticationManager(adminUsername, adminPassword));
 
-        http.csrf().disable()
+        http.headers().frameOptions().sameOrigin().disable()
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilter(apiKeyFilter).addFilterBefore(basicFilter, APIKeyAuthFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/v1/products").permitAll()
+                .antMatchers("/api/v1/products", "/api/v1/orders", "/h2-console/**", "favicon.ico").permitAll()
                 .anyRequest().authenticated();
     }
 

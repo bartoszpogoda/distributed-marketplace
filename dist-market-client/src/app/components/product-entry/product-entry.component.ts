@@ -4,21 +4,19 @@ import { Product } from 'src/app/model/product';
 @Component({
   selector: 'app-product-entry',
   template: `
-    <div class="col-3">
-      <div class="card" style="width: 100%;">
-        <img class="card-img-top" src="assets/images/product.png" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">{{product.title}} <span class="badge badge-secondary">{{product.supplierId}}</span></h5>
-          <div class="card-text">
-            <p>{{product.description}}</p>
-            <p>
-            Producer: {{product.supplierName}} <br/>
-            Left in stock: {{product.quantity}} <br/>
-            Price: {{product.priceMinor / 100}} zł
-            </p>
-          </div>
-          <a (click)="addToOrderClicked()" class="btn btn-primary">Add to order!</a>
+    <div class="card" style="width: 100%;">
+      <img class="card-img-top" src="assets/images/product.png" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{product.title}} <span class="badge badge-secondary">{{product.supplierId}}</span></h5>
+        <div class="card-text">
+          <p>{{product.description}}</p>
+          <p>
+          Producer: {{product.supplierName}} <br/>
+          Left in stock: {{product.quantity}} <br/>
+          Price: {{product.priceMinor / 100}} zł
+          </p>
         </div>
+        <a (click)="addToOrderClicked()" class="btn btn-primary">Add to order!</a>
       </div>
     </div>
   `,

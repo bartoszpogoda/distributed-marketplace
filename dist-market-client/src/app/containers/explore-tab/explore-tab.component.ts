@@ -11,11 +11,14 @@ import { Product } from 'src/app/model/product';
       <h1> Marketplace </h1>
       <p> Explore items available on marketplace </p>
     </div>
-
-    <app-product-entry *ngFor="let product of (products$ | async)"
-      [product]="product"
-      (added)="addToBasket($event)">
-    </app-product-entry>
+    <div class="row">
+      <div class="col-3" *ngFor="let product of (products$ | async)">
+        <app-product-entry
+          [product]="product"
+          (added)="addToBasket($event)">
+        </app-product-entry>
+      </div>
+    </div>
   `
 })
 export class ExploreTabComponent implements OnInit {

@@ -24,8 +24,8 @@ public class SupplierDataServiceImpl implements SupplierDataService {
                 loggedInSupplier.setActive(form.getActive());
             }
 
-            if(form.getCreateOrderHook() != null) {
-                loggedInSupplier.setCreateOrderHook(form.getCreateOrderHook());
+            if(form.getOrderHook() != null) {
+                loggedInSupplier.setOrderHook(form.getOrderHook());
             }
 
             return Optional.ofNullable(this.supplierRepository.save(loggedInSupplier));

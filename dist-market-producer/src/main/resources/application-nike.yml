@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: Nike
+
+server:
+  port: 8901
+
+marketplace:
+  api:
+    key: 87849001f5647815d913cf196b77d839
