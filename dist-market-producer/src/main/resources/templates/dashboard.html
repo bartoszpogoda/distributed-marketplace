@@ -56,8 +56,26 @@
 
         <table class="table table-striped">
             <tr>
-                <th>Id</th>
-                <th>Data</th>
+                <th>ID</th>
+                <th>Total</th>
+                <th>Products</th>
+                <th>Client first name
+                <th>Client family name</th>
+                <th>Client email</th>
+                <th>Shipping address</th>
+            </tr>
+            <tr th:each="order: ${orders}">
+                <td th:text="${order.id}" />
+                <td th:text="${order.totalMinor / 100}" />
+                <td>
+                    <p th:each="entry: ${order.entries}">
+                        [<span th:text="${entry.product.id}"></span>] <span th:text="${entry.product.title}"></span> x <span th:text="${entry.quantity}"></span>
+                    </p>
+                </td>
+                <td th:text="${order.clientFirstName}" />
+                <td th:text="${order.clientFamilyName}" />
+                <td th:text="${order.clientEmail}" />
+                <td th:text="${order.clientAddress}" />
             </tr>
         </table>
     </div>

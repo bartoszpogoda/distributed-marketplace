@@ -18,6 +18,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Optional<Product> save(Product product) {
+        return Optional.ofNullable(produtRepository.save(product));
+    }
+
+    @Override
     public List<Product> getAll() {
         return this.produtRepository.findAll();
     }

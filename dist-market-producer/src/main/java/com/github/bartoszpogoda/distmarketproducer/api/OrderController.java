@@ -31,15 +31,17 @@ public class OrderController {
 
     @PostMapping("/{id}/commit")
     public ResponseEntity<?> commitOrder(@PathVariable Long id) {
-        return null;
+        return this.orderService.commitOrder(id)
+                .map(this.orderMapper::map)
+                .map(dto -> ResponseEntity.ok(dto))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> rollbackOrder(@PathVariable Long id) {
+        this.orderService.rollbackOrder(id);
 
-        // if not already commited then rollback
-
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
 }

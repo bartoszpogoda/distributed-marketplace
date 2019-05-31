@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface ProductService {
 
+    Optional<Product> save(Product product);
+
     List<Product> getAll();
 
     Optional<Product> getById(long id);
