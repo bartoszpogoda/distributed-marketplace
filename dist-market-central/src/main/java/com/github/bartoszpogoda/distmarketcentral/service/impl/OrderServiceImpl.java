@@ -13,9 +13,11 @@ import com.github.bartoszpogoda.distmarketcentral.service.OrderService;
 import com.github.bartoszpogoda.distmarketcentral.service.ProductService;
 import com.github.bartoszpogoda.distmarketcentral.service.SupplierAdministrationService;
 import lombok.extern.java.Log;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.*;
@@ -78,7 +80,9 @@ public class OrderServiceImpl implements OrderService {
                     log.info("Sub-order for " + producerId + " failed");
                     abortAll(responses);
                     log.info("All sub-orders aborted");
-                    return;
+
+                    throw new ResponseStatusException(
+                            HttpStatus.BAD_REQUEST, "Denied by " + producerId);
                 }
 
                 log.info("Sub-order for " + producerId + " prepared");
@@ -88,7 +92,9 @@ public class OrderServiceImpl implements OrderService {
                 log.info("Sub-order for " + producerId + " failed");
                 abortAll(responses);
                 log.info("All sub-orders aborted");
-                return;
+
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Denied by " + producerId);
             }
 
 

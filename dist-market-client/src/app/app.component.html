@@ -1,5 +1,11 @@
 
-<div class="main-container">
+<div class="main-container" style="margin-top: 10px;">
+
+  <div class="row" *ngIf="(alert$ | async) !== null">
+    <div class="col-12">
+      <ngb-alert [type]="(alert$ | async)?.type" (close)="dismissAlert()"><strong>{{(alert$ | async)?.title}}</strong> {{(alert$ | async)?.message}}</ngb-alert>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-8">

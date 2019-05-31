@@ -1,3 +1,4 @@
+import { AlertService } from './../../service/alert.service';
 import { BasketEntry, Basket } from 'src/app/model/basket';
 import { BasketService } from './../../service/basket.service';
 import { Component, OnInit } from '@angular/core';
@@ -107,6 +108,8 @@ import { OrderService } from 'src/app/service/order.service';
 
       <button (click)="placeOrderClicked()" class="btn btn-primary btn-block" style="margin-top: 20px;"
       [ngClass]="{ 'disabled': (basket$ | async)?.entries.length === 0 }">Place order</button>
+
+      
     </div>
   `,
   styles: [`
@@ -118,7 +121,7 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class OrderTabComponent implements OnInit {
 
-  constructor(private basketService: BasketService, private orderService: OrderService) { }
+  constructor(private basketService: BasketService, private orderService: OrderService, private alertService: AlertService) { }
 
   clientForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -154,6 +157,16 @@ export class OrderTabComponent implements OnInit {
     this.basket$.pipe(
       take(1),
       switchMap(basket => this.orderService.createOrder(basket, this.clientForm))
-    ).subscribe(result => console.log(result));
+    ).subscribe(next => {
+      console.log(next);
+      this.alertService.change({
+        type: 'success',
+        title: 'Success',
+        message: 'Order was created succesfully. Please check your e-mail for further details.'
+      });
+    }, error => {
+      console.log(error);
+      this.alertService.change({ type: 'danger', title: error.error.error, message: error.error.message });
+    });
   }
 }
