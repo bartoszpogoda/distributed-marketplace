@@ -8,10 +8,14 @@ public interface ProductService {
 
     Optional<Product> save(Product product);
 
+    void saveOrUpdate(Product product);
+
     List<Product> getAll();
 
     Optional<Product> getById(long id);
 
     Optional<Product> getByMarketplaceId(long id);
+
+    void unregister(Long productId);
 
 }

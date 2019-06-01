@@ -16,7 +16,7 @@ export class BasketService {
     totalMinor: 0
   };
 
-  $basket = new BehaviorSubject<Basket>(this.emptyBasket);
+  $basket = new BehaviorSubject<Basket>({...this.emptyBasket});
 
   getBasket(): Observable<Basket> {
     return this.$basket;
@@ -42,7 +42,10 @@ export class BasketService {
   }
 
   clear() {
-    this.$basket.next(this.emptyBasket);
+    this.$basket.next({
+      entries: [],
+      totalMinor: 0
+    });
   }
 
   decrementQuantity(entry: BasketEntry) {

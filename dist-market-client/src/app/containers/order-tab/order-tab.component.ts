@@ -163,7 +163,7 @@ export class OrderTabComponent implements OnInit {
       switchMap(basket => this.orderService.createOrder(basket, this.clientForm))
     ).subscribe(next => {
       this.productService.refresh();
-      // this.basketService.clear();
+      this.basketService.clear();
 
       this.alertService.change({
         type: 'success',

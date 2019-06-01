@@ -15,4 +15,6 @@ public interface OrderService {
     List<Order> getAll();
 
     void rollbackOrder(Long orderId);
+
+    void removeOrder(Long orderId);
 }

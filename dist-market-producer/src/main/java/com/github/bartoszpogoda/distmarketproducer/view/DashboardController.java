@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/dashboard")
+@RequestMapping("/")
 public class DashboardController {
 
     private final ProductService productService;
@@ -25,6 +25,11 @@ public class DashboardController {
     }
 
     @GetMapping
+    public String getRoot() {
+        return "redirect:dashboard";
+    }
+
+    @GetMapping("/dashboard")
     public String get(Model model) {
         model.addAttribute("appName", this.appName);
         model.addAttribute("products", this.productService.getAll());

@@ -101,4 +101,9 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.delete(order);
     }
 
+    @Override
+    public void removeOrder(Long orderId) {
+        this.orderRepository.deleteById(orderId);
+    }
+
 }
