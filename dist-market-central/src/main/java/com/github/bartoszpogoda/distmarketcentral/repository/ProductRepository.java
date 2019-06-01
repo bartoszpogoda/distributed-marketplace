@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Long removeByIdAndSupplierId(long id, String supplierId);
 
+    Long removeBySupplierId(String supploerId);
+
 }

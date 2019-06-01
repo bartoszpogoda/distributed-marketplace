@@ -24,4 +24,6 @@ public class ProductDto {
     private Integer quantity;
 
     private BigInteger priceMinor;
+
+    private boolean supplierActive;
 }

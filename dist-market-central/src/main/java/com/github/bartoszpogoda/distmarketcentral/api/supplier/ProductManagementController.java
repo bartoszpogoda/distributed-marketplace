@@ -37,6 +37,14 @@ public class ProductManagementController {
                 .orElse(ResponseEntity.badRequest().build());
     }
 
+
+    @DeleteMapping
+    public ResponseEntity<?> unregisterAll(@AuthenticatedSupplierId String supplierId) {
+        this.productService.unregisterProductsOfSupplier(supplierId);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<ProductDto>> listProducts(@AuthenticatedSupplierId String supplierId) {
         List<ProductDto> listOfProductDtos = this.productService

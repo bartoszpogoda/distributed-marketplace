@@ -111,4 +111,10 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository.save(product);
     }
 
+    @Override
+    @Transactional
+    public long unregisterProductsOfSupplier(String supplierId) {
+        return this.productRepository.removeBySupplierId(supplierId);
+    }
+
 }

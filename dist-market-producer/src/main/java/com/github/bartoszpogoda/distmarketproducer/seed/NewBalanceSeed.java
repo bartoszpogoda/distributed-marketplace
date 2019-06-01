@@ -4,12 +4,14 @@ import com.github.bartoszpogoda.distmarketproducer.entity.Product;
 import com.github.bartoszpogoda.distmarketproducer.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 
-@Component
+@Component("seed")
 @Profile("nb")
+@Order(1)
 public class NewBalanceSeed implements CommandLineRunner {
 
     private final ProductRepository productRepository;

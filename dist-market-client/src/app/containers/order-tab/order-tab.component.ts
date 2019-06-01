@@ -107,7 +107,7 @@ import { OrderService } from 'src/app/service/order.service';
       </form>
 
       <button (click)="placeOrderClicked()" class="btn btn-primary btn-block" style="margin-top: 20px;"
-      [ngClass]="{ 'disabled': (basket$ | async)?.entries.length === 0 }">Place order</button>
+      [disabled]="(basket$ | async)?.entries.length === 0">Place order</button>
 
       
     </div>

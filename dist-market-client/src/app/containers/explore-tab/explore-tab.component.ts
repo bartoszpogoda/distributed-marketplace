@@ -12,7 +12,7 @@ import { Product } from 'src/app/model/product';
       <p> Explore items available on marketplace </p>
     </div>
     <div class="row">
-      <div class="col-3" *ngFor="let product of (products$ | async)">
+      <div class="col-3" *ngFor="let product of (products$ | async)" style="margin-bottom: 5px;">
         <app-product-entry
           [product]="product"
           (added)="addToBasket($event)">

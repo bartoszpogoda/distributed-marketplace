@@ -7,7 +7,9 @@ import { Product } from 'src/app/model/product';
     <div class="card" style="width: 100%;">
       <img class="card-img-top" src="assets/images/product.png" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">{{product.title}} <span class="badge badge-secondary">{{product.supplierId}}</span></h5>
+        <h5 class="card-title">{{product.title}} <span class="badge badge-secondary" [ngClass]="{'badge-success': product.supplierActive}">
+        {{product.supplierId}}</span>
+        </h5>
         <div class="card-text">
           <p>{{product.description}}</p>
           <p>
@@ -16,7 +18,10 @@ import { Product } from 'src/app/model/product';
           Price: {{product.priceMinor / 100}} zł
           </p>
         </div>
-        <button (click)="addToOrderClicked()" class="btn btn-primary btn-block">Add to order</button>
+        <button (click)="addToOrderClicked()" [disabled]="isDisabled()"
+        class="btn btn-primary btn-block">
+        Add to order
+        </button>
       </div>
     </div>
   `,
@@ -37,6 +42,10 @@ export class ProductEntryComponent implements OnInit {
 
   addToOrderClicked() {
     this.added.emit(this.product);
+  }
+
+  isDisabled() {
+    return this.product.quantity <= 0 || !this.product.supplierActive;
   }
 
 }

@@ -28,4 +28,6 @@ public interface ProductService {
     boolean unregisterProduct(long productId);
 
     void save(Product product);
+
+    long unregisterProductsOfSupplier(String supplierId);
 }
