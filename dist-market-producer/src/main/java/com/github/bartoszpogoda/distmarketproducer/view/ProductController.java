@@ -1,5 +1,6 @@
 package com.github.bartoszpogoda.distmarketproducer.view;
 
+import com.github.bartoszpogoda.distmarketproducer.dto.EditProductFormDto;
 import com.github.bartoszpogoda.distmarketproducer.entity.Product;
 import com.github.bartoszpogoda.distmarketproducer.exception.ProductNotFoundException;
 import com.github.bartoszpogoda.distmarketproducer.service.ProductService;
@@ -22,13 +23,15 @@ public class ProductController {
     @GetMapping("/form")
     public String getProductForm(Model model, Long productId) {
         Product product = productId != null ? this.productService.getById(productId).orElse(emptyProduct()) : emptyProduct();
-        model.addAttribute("product", product);
+        EditProductFormDto dto = this.productService.convertToForm(product);
+
+        model.addAttribute("product", dto);
 
         return "productForm";
     }
 
     @PostMapping("/form")
-    public String submitProductForm(Model model, @ModelAttribute Product product) {
+    public String submitProductForm(Model model, @ModelAttribute EditProductFormDto product) {
         this.productService.saveOrUpdate(product);
 
         return "redirect:/dashboard";

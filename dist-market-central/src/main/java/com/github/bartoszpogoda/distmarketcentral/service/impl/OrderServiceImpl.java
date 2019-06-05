@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.*;
 
@@ -49,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
     public void processNewOrder(CreateOrderDto createOrderDto) {
         List<OrderEntryDto> entries = createOrderDto.getEntries();
 
+        BigInteger totalForVerification = BigInteger.ZERO;
         Map<String, PrepareOrderDto> suppliersToOrdersMap = new HashMap<>();
 
         for (OrderEntryDto entry : entries) {
@@ -57,6 +59,9 @@ public class OrderServiceImpl implements OrderService {
             PrepareOrderDto orderDto = suppliersToOrdersMap.getOrDefault(product.getSupplier().getId(), buildPrepareOrderDto(createOrderDto));
 
             orderDto.getEntries().add(entry);
+            BigInteger entryPrice = product.getPriceMinor().multiply(BigInteger.valueOf(entry.getQuantity()));
+            orderDto.setTotalMinor(orderDto.getTotalMinor().add(entryPrice));
+            totalForVerification = totalForVerification.add(entryPrice);
 
             product.setQuantity(product.getQuantity() - entry.getQuantity());
             productService.save(product);
@@ -65,6 +70,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Map<String, ResponseEntity<OrderDto>> responses = new HashMap<>();
+
+        // assert sum
+        if (totalForVerification.compareTo(createOrderDto.getTotalMinor()) != 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Order was rejected. Probably some prices were updated in meanwhile. Please refresh your page");
+        }
+
 
         // prepare phase
         for (String producerId : suppliersToOrdersMap.keySet()) {
@@ -138,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
                 .entries(new ArrayList<>())
                 .familyName(dto.getFamilyName())
                 .firstName(dto.getFirstName())
-                .totalMinor(dto.getTotalMinor())
+                .totalMinor(BigInteger.ZERO)
                 .build();
 
     }

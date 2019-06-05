@@ -16,7 +16,7 @@ import { Product } from 'src/app/model/product';
       </div>
     </div>
     <div class="row">
-      <div class="col-3" *ngFor="let product of (products$ | async)" style="margin-bottom: 5px;">
+      <div class="col-6 col-lg-3" *ngFor="let product of (products$ | async)" style="margin-bottom: 5px;">
         <app-product-entry
           [product]="product"
           (added)="addToBasket($event)">

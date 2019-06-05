@@ -48,7 +48,7 @@
                 <td th:text="${product.title}" />
                 <td th:text="${product.description}" />
                 <td th:text="${product.quantity}" />
-                <td th:text="${product.priceMinor / 100}" />
+                <td><span th:text="${product.priceMinor / 100}"></span>,<span th:if="${product.priceMinor % 100 < 10}">0</span><span th:text="${product.priceMinor % 100}"></span> zł</td>
                 <td>
                     <a href="#" th:href="@{/products/form(productId=${product.id})}" style="margin-top: -8px;"
                        class="btn btn-default btn-xs" aria-label="X"> <i class="fas fa-edit"></i>
@@ -80,17 +80,16 @@
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
-                <th>Total</th>
                 <th>Products</th>
                 <th>Client first name
                 <th>Client family name</th>
                 <th>Client email</th>
                 <th>Shipping address</th>
+                <th>Total</th>
                 <th>Actions</th>
             </tr>
             <tr th:each="order: ${orders}">
                 <td th:text="${order.id}" />
-                <td th:text="${order.totalMinor / 100}" />
                 <td>
                     <p th:each="entry: ${order.entries}">
                         [<span th:text="${entry.product.id}"></span>] <span th:text="${entry.product.title}"></span> x <span th:text="${entry.quantity}"></span>
@@ -100,6 +99,7 @@
                 <td th:text="${order.clientFamilyName}" />
                 <td th:text="${order.clientEmail}" />
                 <td th:text="${order.clientAddress}" />
+                <td><span th:text="${order.totalMinor/ 100}"></span>,<span th:if="${order.totalMinor % 100 < 10}">0</span><span th:text="${order.totalMinor % 100}"></span> zł</td>
                 <td>
                     <a href="#" th:href="@{/orders/remove(orderId=${order.id})}" style="margin-top: -8px;"
                        class="btn btn-default btn-xs" aria-label="X"> <i class="fas fa-trash"></i>

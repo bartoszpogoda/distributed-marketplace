@@ -1,5 +1,6 @@
 package com.github.bartoszpogoda.distmarketproducer.service.impl;
 
+import com.github.bartoszpogoda.distmarketproducer.dto.EditProductFormDto;
 import com.github.bartoszpogoda.distmarketproducer.dto.ProductDto;
 import com.github.bartoszpogoda.distmarketproducer.entity.Product;
 import com.github.bartoszpogoda.distmarketproducer.exception.ProductNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +46,13 @@ public class ProductServiceImpl implements ProductService {
         return Optional.ofNullable(productRepository.save(product));
     }
 
+    @Override
     @Transactional
-    public void saveOrUpdate(Product product) {
+    public void saveOrUpdate(EditProductFormDto form) {
+        saveOrUpdate(convertToProduct(form));
+    }
+
+    private void saveOrUpdate(Product product) {
 
         if (product.getMarketplaceId() != null) {
             restTemplate.put(productManagementUrl + "/" + product.getMarketplaceId(),
@@ -66,16 +73,40 @@ public class ProductServiceImpl implements ProductService {
     public void unregister(Long productId) {
         Product product = getById(productId).orElseThrow(ProductNotFoundException::new);
 
-        if(product.getMarketplaceId() != null) {
+        if (product.getMarketplaceId() != null) {
             HttpEntity<?> request = new HttpEntity<>(buildHeaders());
             restTemplate.exchange(productManagementUrl + "/" + product.getMarketplaceId(), HttpMethod.DELETE, request, String.class);
             product.setMarketplaceId(null);
         }
 
-        if(this.orderEntryRepository.findAllByProduct(product).size() == 0) {
+        if (this.orderEntryRepository.findAllByProduct(product).size() == 0) {
             // no order references - can be deleted
             this.productRepository.delete(product);
         }
+    }
+
+    private Product convertToProduct(EditProductFormDto form) {
+        return Product.builder()
+                .id(form.getId())
+                .description(form.getDescription())
+                .title(form.getTitle())
+                .marketplaceId(form.getMarketplaceId())
+                .quantity(form.getQuantity())
+                .priceMinor(form.getPriceMinor().add(form.getPriceMajor().multiply(BigInteger.valueOf(100))))
+                .build();
+    }
+
+    @Override
+    public EditProductFormDto convertToForm(Product product) {
+        return EditProductFormDto.builder()
+                .id(product.getId())
+                .description(product.getDescription())
+                .title(product.getTitle())
+                .marketplaceId(product.getMarketplaceId())
+                .quantity(product.getQuantity())
+                .priceMinor(product.getPriceMinor() != null ? product.getPriceMinor().mod(BigInteger.valueOf(100)) : BigInteger.ZERO)
+                .priceMajor(product.getPriceMinor() != null ? product.getPriceMinor().divide(BigInteger.valueOf(100)) : BigInteger.ZERO)
+                .build();
     }
 
     private HttpHeaders buildHeaders() {
